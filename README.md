@@ -1,0 +1,2 @@
+# PythonKurssi
+repo python harjoituksille
