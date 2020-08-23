@@ -60,8 +60,17 @@ def lampo_haku():
             paikkakunta=''.join(rivi)
             conn.request("GET", "/saa/" + paikkakunta,)
             vastaus=conn.getresponse()
+#---------------------------------------------tänne tallennetaan lokiin jos on virhettä
             if vastaus.status > 200:
                 print('lämötila tai paikkakunta ei löydy')
+                teksti=open("saa_loki.txt","ta")
+                teksti.write("\n")
+                import datetime
+                teksti.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S: "))
+
+                teksti.write(str(counter) + "." + paikkakunta + ":  Hakuvirhe")
+                counter+=1
+                teksti.close()
             else:
                 html=str(vastaus.read())
                 indeksi = html.index('<span class="temperature-')
@@ -79,6 +88,7 @@ def lampo_haku():
                 teksti.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S: "))
 
                 teksti.write(str(counter) + "." + paikkakunta + ": " + lämpötila + " astetta")
+                counter+=1
                 teksti.close()
 
 #--------------------------------------------lokin jälkeen tulostetaan
@@ -89,8 +99,6 @@ def lampo_haku():
         teksti=open("saa_loki.txt","r")
         print(teksti.read())
         teksti.close()
-    else:
-        print("Näkemiin!")
 
 # --------------------------------------tässä alkaa pääohjelma
 import sqlite3
@@ -109,28 +117,4 @@ paikkakunta_dbtulostus()
 lampo_haku()
 #SULjETAAN TIETOKANTAYHTEYS
 dbconn.close()
-
-# import http.client
-
-# conn=http.client.HTTPSConnection("www.ilmatieteenlaitos.fi")
-
-
-
-# conn.request("GET", "/saa/porvoo",)
-# vastaus=conn.getresponse()
-
-# if vastaus.status > 200:
-#    print('paikkakunta ei löytyy')
-# else:
-#     html=str(vastaus.read())
-
-
-#     indeksi = html.index('<span class="temperature-')
-
-#     alku=indeksi+47
-#     loppu=alku+3
-#     lämpötila=html[alku:loppu]
-#     # print(lämpötila)
-#     if lämpötila[2]=="\\":
-#         lämpötila=lämpötila[0:2]
-#     print(f"Lämpötila Porvoossa: {lämpötila} astetta.")
+print("Näkemiin!")

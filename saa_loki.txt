@@ -11,3 +11,9 @@
 2020-08-23 11:08:58: 1.Porvoo: 22 astetta
 2020-08-23 11:08:59: 1.Askola: 23 astetta
 2020-08-23 11:09:01: 1.Helsinki: 21 astetta
+2020-08-23 11:11:28: 1.Porvoo: 22 astetta
+2020-08-23 11:11:28: 1.Askola: 23 astetta
+2020-08-23 11:11:28: 1.Helsinki: 21 astetta
+2020-08-23 11:12:24: 1.Porvoo: 22 astetta
+2020-08-23 11:12:24: 2.Askola: 23 astetta
+2020-08-23 11:12:24: 3.Helsinki: 21 astetta
