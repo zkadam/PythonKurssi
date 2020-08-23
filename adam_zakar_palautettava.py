@@ -19,7 +19,7 @@ def lisaa_paikkakunta():
         kursori.execute(sql,(paikkakunta,))
         dbconn.commit()
         print("Tallennus tehty")
-    
+# ---------------------------------------------funktio joka tulostaa kaikki paikkakunnat tietokannasta    
 def paikkakunta_dbtulostus():
     print("---------------------------------")
     print("Täällä hetkellä näitä paikkakuntia seurataan:")
@@ -28,6 +28,7 @@ def paikkakunta_dbtulostus():
         print(rivi)
     
     print("Tietokanta suljettu")
+    # -------------------------------------funktio jolla muokataan tietokantaan tallennetut paikkakunnat
 def Seuranta_muutos():
     print("Haluatko muuttaa seurattavia paikkakuntia?")
     whats_next=input("'k'=kyllä(poistaa kaiken), 'l'=lisää uuden paikkakunnan, 'x'=ei muutoksia")
@@ -46,18 +47,15 @@ def Seuranta_muutos():
              paikkakunta_dbtulostus()
         else:
             break
+# ---------------------------------------------funktio joka hakee ja tulostaa lämpötilat   
 
 def lampo_haku():
-    #     seuraavaksi ohjelma kysyy haluatko hakea lämpötilatiedon ilmatieteenlaitokselta?
-    # jos käyttäjä vastaa kyllä "K", ohjelma
-    # lukee paikkakunnat-taulun rivit silmukassa
-    # hakee ilmatieteenlaitoksen sivuilta kunkin tauluun tallennetun paikkakunnan lämpötilan
-    # tulostaa tiedot siististi allekkain konsoli-ikkunaan "Paikkakunta - tab - lämpötila" (tab = sarkain taikka sopiva määrä välilyöntejä, jotta paikakuntien nimet sekä lämpötilat olisivat siististi allekkain)
     whats_next=input("Haluatko hakea läpötilatiedon imlatieteenlaitokselta? (kyllä = 'K' / ei='X')")
     if whats_next.upper()=='K':
         import http.client
         conn=http.client.HTTPSConnection("www.ilmatieteenlaitos.fi")
         sql="SELECT paikkakunta FROM paikkakunnat"
+        counter=1
         for rivi in kursori.execute(sql):
             paikkakunta=''.join(rivi)
             conn.request("GET", "/saa/" + paikkakunta,)
@@ -74,10 +72,23 @@ def lampo_haku():
 
                 if lämpötila[2]=="\\":
                     lämpötila=lämpötila[0:2]
+#---------------------------------------------tänne tallennetaan lokiin                    
+                teksti=open("saa_loki.txt","ta")
+                teksti.write("\n")
+                import datetime
+                teksti.write(datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S: "))
+
+                teksti.write(str(counter) + "." + paikkakunta + ": " + lämpötila + " astetta")
+                teksti.close()
+
+#--------------------------------------------lokin jälkeen tulostetaan
                 paikkakunta=paikkakunta + ':'
                 while len(paikkakunta)<20:
                     paikkakunta=paikkakunta+" "
                 print(f"Lämpötila paikkakunnalla - {paikkakunta}{lämpötila} astetta.")
+        teksti=open("saa_loki.txt","r")
+        print(teksti.read())
+        teksti.close()
     else:
         print("Näkemiin!")
 
