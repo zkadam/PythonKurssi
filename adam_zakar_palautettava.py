@@ -74,7 +74,10 @@ def lampo_haku():
 
                 if lämpötila[2]=="\\":
                     lämpötila=lämpötila[0:2]
-                print(f"Lämpötila Porvoossa:          {lämpötila} astetta.")
+                paikkakunta=paikkakunta + ':'
+                while len(paikkakunta)<20:
+                    paikkakunta=paikkakunta+" "
+                print(f"Lämpötila paikkakunnalla - {paikkakunta}{lämpötila} astetta.")
     else:
         print("Näkemiin!")
 
